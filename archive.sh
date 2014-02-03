@@ -1,8 +1,8 @@
 #!/bin/sh
 #Archive all folders and sync with amazon Glacier
 
-DIR=`dirname $0`
-$DIR/parameters.sh
+SOURCE_FOLDER=$1
+HLINKS_FOLDER=$2
 
 #cycle by every folder in SOURCE_FOLDER
 for i in `find $SOURCE_FOLDER -maxdepth 1 -mindepth 1 -type d -exec basename {} \;`
