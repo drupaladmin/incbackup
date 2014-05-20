@@ -27,16 +27,25 @@ do
 			#generate archive name
 			ARC_NAME=/tmp/$i"_"`date +'%d%m%Y%H%M'`".tar.gz"
 	
-			cat /tmp/archive_files
+			#cat /tmp/archive_files
 	
 			echo "Creating archive - "$ARC_NAME
 	
 			#change directory to source and archive only new files		
-			cd $SOURCE_FOLDER$i && tar cvfz $ARC_NAME --files-from /tmp/archive_files
+			cd $SOURCE_FOLDER$i && tar cfz $ARC_NAME --files-from /tmp/archive_files
 	      
+	    	echo "Creating hard link - "$SOURCE_FOLDER$i
+	    	
 			#copy hard links to HLINKS_FOLDER
 			cp -al $SOURCE_FOLDER$i $HLINKS_FOLDER
+			
+			echo "upload - "$ARC_NAME" to files in eu-west-1"
+			
+			/root/bin/glacier-cli/glacier.py --region eu-west-1 archive upload --name $i"_"`date +'%d%m%Y%H%M'`".tar.gz" files $ARC_NAME
+			
+			rm $ARC_NAME
+			
 	else
-			echo "No new files"
+			echo "No new files in "$i
 	fi		
 done
